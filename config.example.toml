@@ -1,0 +1,32 @@
+# Example configuration for the EBA Pillar 3 Data Hub (EDAP) extractor.
+# Copy to `config.toml` and pass `--config config.toml` to `eba-p3dh sync`.
+
+[filters]
+# Default: sync only latest accepted quantitative submissions
+latest_only = true
+accepted_only = true
+quantitative_only = true
+
+# Optional filters (empty lists = no restriction)
+countries = []              # e.g. ["Germany", "France", "Spain"]
+leis = []                   # e.g. ["549300OLBL49CW8CT155"]
+# entity_name_contains = "Santander"
+institution_types = []      # e.g. ["Large highest EEA", "Other highest EEA"]
+modules = []                # e.g. ["CODIS", "FINDIS", "ESGDIS", "IRRBBDIS", "MRELTLACDIS", "REMDIS", "GSIIDIS"]
+templates = []              # e.g. ["K_01.00", "K_41.00", "K_68.00"]
+reference_dates = []        # e.g. ["2025-12-31", "2026-03-31"]
+# reference_date_from = "2025-06-30"
+# reference_date_to = "2026-12-31"
+# limit_submissions = 50    # Optional cap per sync run (useful for quick testing)
+
+[storage]
+backend = "duckdb"                  # "duckdb" (default) or "sqlite"
+db_path = "data/eba_pillar3.duckdb" # e.g. "data/eba_pillar3.sqlite" if using sqlite
+export_dir = "data/exports"
+export_formats = ["parquet"]        # any subset of ["parquet", "csv"]
+
+[client]
+page_size = 5000
+timeout_seconds = 60.0
+max_retries = 4
+request_delay_seconds = 0.15
